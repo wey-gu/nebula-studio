@@ -71,6 +71,7 @@ func main() {
 
 	// global middleware
 	server.Use(auth.AuthMiddlewareWithCtx(svcCtx))
+	server.Use(utils.DisableTraceTrackMiddleware)
 	server.Use(rest.ToMiddleware(middleware.ReserveRequest(middleware.ReserveRequestConfig{
 		Skipper: func(r *http.Request) bool {
 			return !utils.PathHasPrefix(r.URL.Path, utils.ReserveRequestRoutes)
