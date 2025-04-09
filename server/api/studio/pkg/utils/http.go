@@ -9,6 +9,17 @@ import (
 	"strings"
 )
 
+// Middleware to disable HTTP TRACE and TRACK methods
+func DisableTraceTrackMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        if r.Method == "TRACE" || r.Method == "TRACK" {
+            http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+            return
+        }
+        next.ServeHTTP(w, r)
+    })
+}
+
 var (
 	ReserveRequestRoutes = []string{
 		"/api-nebula/db/",
